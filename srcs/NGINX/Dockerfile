@@ -1,12 +1,17 @@
 
-# base image : alpine is used for its small size
-FROM nginx:alpine
-CMD [ "echo", "Hello Zak" ]
+# base image : debian is used for its small size
+FROM debian:buster
+# CMD [ "echo", "Hello Zak" ]
 
-#docker build --tag <nametage>  <location>
+RUN apt-get update && \
+	apt-get upgrade -y
 
-#config
-COPY /app/nginx.conf /etc/nginx/conf.d/default.conf
+RUN apt-get install nginx -y
 
-#content
-COPY ./*.html /user/share/nginx/html/
+# #docker build --tag <nametage>  <location>
+
+# #config
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# #content
+# COPY ./*.html /user/share/nginx/html/
