@@ -1,0 +1,65 @@
+# build: this tells Docker where to look for the Dockerfile that builds the
+# image that runs in this container.
+
+# container_name: container_name
+
+# restart: if the container crashes, this option specifies what to do. set all 3
+# of them to unless-stopped, as specified in the subject
+
+# depends_on: you can use this to ensure one container is build before another.
+# since wordpress requires a database to store its content, I chose to have
+# wordpress depend on mariadb.
+
+# networks: what network should the container be a part of. more on this later
+
+# volumes: this is the most annoying part of the project. So a volume is a folder
+# on your disk that you mount onto a folder on the container. it's similar to a
+# shared folder. the volumes line is split by colons:
+#  {PATH_TO_DISK_FOLDER}:{PATH_TO_CONTAINER_FOLDER}
+# You can put a second colon at the end to specify permissions (:ro sets it to
+# read-only, :rw to read and write, etc.), but this isn't necessary.
+# The path to disk folder needs to be /Users/{login}/data. you can specify this
+# in your .env file, just make sure your Makefile includes the .env file before
+# making.
+
+version: "3"
+services:
+#database layer for wordpress >> Mariadb
+  nginx:
+      image: nginx:latest
+      depends_on:
+        - mybb
+      logging:
+        driver: syslog
+        options:
+          tag: "{{.DaemonName}}(image={{.ImageName}};name={{.Name}};id={{.ID}})"
+      ports:
+        - 8080:8080
+      restart: on-failure
+      volumes:
+        - ${PWD}/nginx:/etc/nginx/conf.d:ro
+        - ${PWD}/mybb:/var/www/html:ro
+
+  mariadb:
+    image: mariadb:10.7
+    env_file:
+      - .env
+    restart: on-failure
+    volumes:
+     - ${PWD}/mariadb:/var/lib/mysql
+
+  wordpress:
+    image: wordpress:latest
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: wp_db
+      WORDPRESS_DB_USER: my-user
+      WORDPRESS_DB_PASSWORD: my-password
+      WORDPRESS_DB_NAME: my-db
+    ports:
+      - "8080:80"
+volumes:
+  mariadb: {}
+
+
