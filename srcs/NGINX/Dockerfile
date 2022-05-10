@@ -3,22 +3,22 @@
 FROM debian:buster
 
 
-# EXPOSE  80 443 3306
+ EXPOSE 443
 
 #copy everything to docker
 #COPY srcs /tmp
 
 #update repo and software package
 RUN apt-get update \
-&& apt-get install -y procps \
-&& apt-get install nano \
-&& apt-get install -y wget \
-&& apt-get install  openssl
+&& apt-get upgrade -y\
+&& apt-get install -y nginx \
+&& apt-get install vim -y \
+&& apt-get install -y curl \
+&& apt-get install openssl -y
 
 RUN apt-get -y install wget
 
 #install nginx, curl, wget on debian
-RUN apt-get install -y nginx
 
 # #ssl
 ADD ./tools ./
@@ -27,3 +27,4 @@ ADD ./tools ./
 # #content
 # COPY ./*.html /user/share/nginx/html/
 ENTRYPOINT bash init.sh
+CMD exec nginx -g "daemon off;"
