@@ -3,7 +3,7 @@
 FROM debian:buster
 
 
- EXPOSE 443
+ EXPOSE 443 80
 
 #copy everything to docker
 #COPY srcs /tmp
@@ -12,9 +12,9 @@ FROM debian:buster
 RUN apt-get update \
 && apt-get upgrade -y\
 && apt-get install -y nginx \
-&& apt-get install vim -y \
 && apt-get install -y curl \
-&& apt-get install openssl -y
+&& apt-get install openssl -y 
+
 
 RUN apt-get -y install wget
 
@@ -26,5 +26,6 @@ ADD ./tools ./
 
 # #content
 # COPY ./*.html /user/share/nginx/html/
-ENTRYPOINT bash init.sh
-CMD exec nginx -g "daemon off;"
+RUN bash init.sh
+
+CMD ["service", "nginx", "start"]

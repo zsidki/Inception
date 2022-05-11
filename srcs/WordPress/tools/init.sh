@@ -4,8 +4,15 @@ chmod 777 /etc/nginx/nginx.conf
 mv nginx.conf /etc/nginx/nginx.conf
 
 
+
+
 rm -rf /etc/nginx/sites-enabled/* && \
 	mv default /etc/nginx/sites-available/default && \
 	ln -fs /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
 
 echo "daemon off;" >> /etc/nginx/nginx.conf
+
+php-fpm7.3 -F -R
+
+service nginx start
+service php7.3-fpm start

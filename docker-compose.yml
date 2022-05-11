@@ -22,43 +22,55 @@
 # in your .env file, just make sure your Makefile includes the .env file before
 # making.
 
-version: "3"
+# docker-compose.yml
+version: "3.8"
 services:
-#database layer for wordpress >> Mariadb
   nginx:
-      image: nginx:latest
-      depends_on:
-        - mybb
-      logging:
-        driver: syslog
-        options:
-          tag: "{{.DaemonName}}(image={{.ImageName}};name={{.Name}};id={{.ID}})"
-      ports:
-        - 8080:8080
-      restart: on-failure
-      volumes:
-        - ${PWD}/nginx:/etc/nginx/conf.d:ro
-        - ${PWD}/mybb:/var/www/html:ro
-
-  mariadb:
-    image: mariadb:10.7
-    env_file:
-      - .env
-    restart: on-failure
-    volumes:
-     - ${PWD}/mariadb:/var/lib/mysql
-
-  wordpress:
-    image: wordpress:latest
+    container_name: nginx
+    build: ./srcs/Nginx
+    command: nginx -g "daemon off;"
+    links:
+      - php
+    ports:
+      - "80:80"
     volumes:
       - ./src:/var/www/html
-    environment:
-      WORDPRESS_DB_HOST: wp_db
-      WORDPRESS_DB_USER: my-user
-      WORDPRESS_DB_PASSWORD: my-password
-      WORDPRESS_DB_NAME: my-db
+  php:
+    container_name: php
+    build: ./srcs/wordpress/php
+    links:
+      - mysql
     ports:
-      - "8080:80"
+      - "9000:9000"
+    volumes:
+      - ./src:/var/www/html
+    working_dir: /var/www/html
+
+  mysql:
+    image: mysql:8.0.27
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '<root-password>'
+      MYSQL_DATABASE: helloworld
+      MYSQL_USER: helloworld
+      MYSQL_PASSWORD: '<db-password>'
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./database/mysql:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8085:80
 volumes:
   mariadb: {}
 
