@@ -13,7 +13,7 @@ RUN apt-get update \
 
 COPY ./tools .
 
-RUN mkdir /var/www/html/phpmyadmin \
+RUN mkdir -p /var/www/html/phpmyadmin \
     && chmod 777 /var/www/html/phpmyadmin \
     && mv index.php /var/www/html/phpmyadmin
 
