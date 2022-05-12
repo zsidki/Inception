@@ -33,11 +33,12 @@ services:
       - php
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./src:/var/www/html
   php:
     container_name: php
-    build: ./srcs/wordpress/php
+    build: ./srcs/Wordpress
     links:
       - mysql
     ports:
@@ -59,18 +60,18 @@ services:
     volumes:
       - ./database/mysql:/var/lib/mysql
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: pma
-    links:
-      - mysql
-    environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
-      PMA_ARBITRARY: 1
-    restart: always
-    ports:
-      - 8085:80
+  # phpmyadmin:
+  #   image: ./srcs/Wordpress
+  #   container_name: php
+  #   links:
+  #     - mysql
+  #   environment:
+  #     PMA_HOST: mysql
+  #     PMA_PORT: 3306
+  #     PMA_ARBITRARY: 1
+  #   restart: always
+  #   ports:
+  #     - 8085:80
 volumes:
   mariadb: {}
 
