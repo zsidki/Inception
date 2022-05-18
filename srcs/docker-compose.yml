@@ -96,43 +96,64 @@
 #             type: none
 #             device: '/home/zsidki/data/wordpress'
 
+
+version: "3"
+services:
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    image: nginx
+    ports:
+      - "443:443"
+    networks:
+        - Inception
+    restart: always
+    depends_on:
+        - wordpress
+    volumes:
+      - wordpress_data:/var/www/html
+
+
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress
+    image: wordpress
+    ports:
+      - "9000"
+    networks:
+        - Inception
+    restart: always
+    volumes:
+      - wordpress_data:/var/www/html
+
+  # mysql:
+  #   container_name: mysql
+  #   build: ./requirements/mariadb
+  #   image: mariadb
+  #   environment:
+  #     - .env
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - ./database/mysql:/var/lib/mysql
+  #   restart: always
+
+volumes: 
+    wordpress_data:
+        driver: local
+        driver_opts:
+            o: bind
+            type: none
+            device: '/Users/zsidki/data/wordpress'
+    mariadb_data:
+        driver: local
+        driver_opts:
+            o: bind
+            type: none
+            device: '/Users/zsidki/data/wordpress'
+
 networks:
     Inception:
         name: Inception
         driver: bridge
 
-version: "3.8"
-services:
-  nginx:
-    container_name: nginx
-    build: ./requirements/Nginx
-    links:
-      - php
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./src:/var/www/html
-  php:
-    container_name: php
-    build: ./requirements/Wordpress
-    links:
-      - mysql
-    ports:
-      - "9000:9000"
-    volumes:
-      - ./src:/var/www/html
-    working_dir: /var/www/html
-
-  mysql:
-    image: mysql:8.0.27
-    container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: '<root-password>'
-      MYSQL_DATABASE: helloworld
-      MYSQL_USER: helloworld
-      MYSQL_PASSWORD: '<db-password>'
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./database/mysql:/var/lib/mysql

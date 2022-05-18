@@ -3,7 +3,7 @@
 FROM debian:buster
 
 
- EXPOSE 443 80
+ EXPOSE 443
 
 #copy everything to docker
 #COPY srcs /tmp
