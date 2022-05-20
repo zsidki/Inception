@@ -108,10 +108,10 @@ services:
     networks:
         - Inception
     restart: always
-    depends_on:
-        - wordpress
     volumes:
       - wordpress_data:/var/www/html/
+    depends_on:
+        - wordpress
 
 
   wordpress:
@@ -124,14 +124,13 @@ services:
       - Inception
     restart: always
     environment:
-      WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress
+      - .env
     volumes:
       - wordpress_data:/var/www/html
+    depends_on:
+        - mariadb
 
-  # mysql:
+  # mariadb:
   #   container_name: mysql
   #   build: ./requirements/mariadb
   #   image: mariadb
@@ -139,17 +138,19 @@ services:
   #     - .env
   #   ports:
   #     - "3306:3306"
+  #   networks:
+  #     - Inception
   #   volumes:
   #     - mariadb_data:/var/lib/mysql
   #   restart: always
 
-volumes: 
+volumes:
     wordpress_data:
         driver: local
         driver_opts:
-            o: bind
             type: none
             device: '/Users/zsidki/data/wordpress'
+            o: bind
     mariadb_data:
         driver: local
         driver_opts:

@@ -1,19 +1,23 @@
 # base image : debian is used for its small size
 FROM debian:buster
 
-COPY . .
+RUN apt-get update
+RUN apt-get install -y php7.3 php7.3-fpm php7.3-curl php7.3-gd
+RUN apt-get install -y php-mysql php-mbstring php-zip php-gd php-xml php-pear php-gettext php-cgi
+RUN apt-get install  -y php-curl php-intl php-soap php-xmlrpc
 
-EXPOSE 9000
+RUN apt-get install wget -y
+RUN wget https://wordpress.org/latest.tar.gz
+RUN tar -xzvf latest.tar.gz
+RUN echo "listen = 9000" >> /etc/php/7.3/fpm/pool.d/www.conf
+RUN mkdir -p /var/run/php
 
-RUN sh ./tools/setup.sh
-
-WORKDIR /var/www/html/
-
-RUN mkdir /var/www/html/wordpress && \
-    cp -a /tmp/wordpress/. /var/www/html/ && \
-    chown -R www-data:www-data /var/www/html
-
-COPY ./tools/wp-config.php /var/www/html
+COPY ./tools/wp-config.php ./wordpress
+COPY ./tools/setup.sh .
 
 
-CMD ["php-fpm7.3", "-F", "-R"]
+# todo remove it
+COPY ./tools . 
+
+
+CMD ["sh", "setup.sh"]
