@@ -12,8 +12,8 @@ M = docker exec -it mysql bash
 
 
 # init:
-# 	sudo mkdir -p /User/zsidki/data/wordpress
-# 	sudo mkdir -p /User/zsidki/data/mariadb
+# 	sudo mkdir -p /home/zsidki/data/wordpress
+# 	sudo mkdir -p /home/zsidki/data/mariadb
 
 run: #init
 	$(DC) -f $(YML) up $(B)
