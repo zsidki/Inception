@@ -5,3 +5,6 @@ docker rmi <image>
 docker run -d -p 80:80 -p 443:443 <name image>
 
 docker exec -it <container> bash
+
+
+docker volume rm $(docker volume ls -q)

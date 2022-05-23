@@ -23,80 +23,6 @@
 # making.
 
 # docker-compose.yml
-# version: "3.8"
-# services:
-
-#   nginx:
-#     container_name: nginx
-#     build: ./requirements/nginx
-#     ports:
-#       - "443:443"
-#     restart: always
-#     networks:
-#             - Inception
-#     volumes:
-#       -  wordpress_data:/var/www/html
-
-#   wordpress:
-#       container_name: wordpress
-#       build: ./requirements/wordpress
-#       # image: wordpress
-#       ports:
-#           - "9000"
-#       networks:
-#           - Inception
-#       volumes:
-#           -  wordpress_data:/var/www/html
-#       restart: always
-#       # environment:
-#       #     - .env
-#       # depends_on:
-#       #     - mariadb
-#   # wordpress:
-#   #   container_name: wordpress
-#   #   build: ./requirements/wordpress
-#   #   ports:
-#   #     - "9000:9000"
-#   #   restart: always
-#   #   networks:
-#   #           - Inception
-#   #   volumes:
-#   #     - wordpress_data:/var/www/html
-
-#   # mysql:
-#   #   image: mysql:8.0.27
-#   #   container_name: mysql
-#   #   environment:
-#   #     MYSQL_ROOT_PASSWORD: '<root-password>'
-#   #     MYSQL_DATABASE: helloworld
-#   #     MYSQL_USER: helloworld
-#   #     MYSQL_PASSWORD: '<db-password>'
-#   #   ports:
-#   #     - "3306:3306"
-#   #   volumes:
-#   #     - ./database/mysql:/var/lib/mysql
-
-#   # phpmyadmin:
-#   #   image: ./srcs/Wordpress
-#   #   container_name: php
-#   #   links:
-#   #     - mysql
-#   #   environment:
-#   #     PMA_HOST: mysql
-#   #     PMA_PORT: 3306
-#   #     PMA_ARBITRARY: 1
-#   #   restart: always
-#   #   ports:
-#   #     - 8085:80
-# volumes: 
-#     wordpress_data:
-#         driver: local
-#         driver_opts:
-#             o: bind
-#             type: none
-#             device: '/home/zsidki/data/wordpress'
-
-
 version: "3"
 services:
   nginx:
@@ -109,10 +35,9 @@ services:
         - Inception
     restart: always
     volumes:
-      - wordpress_data:/var/www/html/
+      - wordpress_data:/var/www/html
     depends_on:
         - wordpress
-
 
   wordpress:
     build: ./requirements/wordpress
@@ -123,7 +48,7 @@ services:
     networks:
       - Inception
     restart: always
-    environment:
+    env_file:
       - .env
     volumes:
       - wordpress_data:/var/www/html
@@ -134,10 +59,10 @@ services:
     container_name: mysql
     build: ./requirements/mariadb
     image: mariadb
-    environment:
+    env_file:
       - .env
     ports:
-      - "3306:3306"
+      - "3306"
     networks:
       - Inception
     volumes:
@@ -162,4 +87,3 @@ networks:
     Inception:
         name: Inception
         driver: bridge
-
