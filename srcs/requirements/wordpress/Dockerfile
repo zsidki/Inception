@@ -6,7 +6,7 @@ RUN apt-get install -y php7.3 php7.3-fpm php7.3-curl php7.3-gd
 RUN apt-get install -y php-mysql php-mbstring php-zip php-gd php-xml php-pear php-gettext php-cgi
 RUN apt-get install  -y php-curl php-intl php-soap php-xmlrpc
 
-RUN apt-get install wget -y
+RUN apt-get install -y wget 
 RUN apt-get install -y vim 
 RUN apt-get install -y curl
 RUN wget https://wordpress.org/latest.tar.gz

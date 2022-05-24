@@ -8,3 +8,8 @@ docker exec -it <container> bash
 
 
 docker volume rm $(docker volume ls -q)
+
+login to mysql
+mysql -u root -p
+
+show databases;

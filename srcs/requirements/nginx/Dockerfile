@@ -8,9 +8,9 @@ RUN apt-get update \
 && apt-get upgrade -y\
 && apt-get install -y nginx \
 && apt-get install -y curl \
-&& apt-get install openssl -y 
+&& apt-get install -y openssl  
 
-RUN apt-get -y install wget
+RUN apt-get install -y wget
 
 
 ADD ./tools ./

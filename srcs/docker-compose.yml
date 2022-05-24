@@ -74,14 +74,14 @@ volumes:
         driver: local
         driver_opts:
             type: none
-            device: '/Users/zsidki/data/wordpress'
+            device: '/home/zsidki/data/wordpress'
             o: bind
     mariadb_data:
         driver: local
         driver_opts:
             o: bind
             type: none
-            device: '/Users/zsidki/data/mariadb'
+            device: '/home/zsidki/data/mariadb'
 
 networks:
     Inception:
