@@ -10,11 +10,11 @@ W = docker exec -it wordpress bash
 N = docker exec -it nginx bash
 M = docker exec -it mysql bash
 
-#init:
+
 #  	sudo mkdir -p /home/zsidki/data/wordpress
 #  	sudo mkdir -p /home/zsidki/data/mariadb
 
-run: #init
+run:
 	@$(DC) -f $(YML) up $(B)
 
 pause:
