@@ -1,7 +1,7 @@
 "i'm so glad they got rid of ft_services, how bad can the replacement project be?"
     - a fool
 
-nkuipers presents: a guide for dummies to pass this terrible project
+guide for dummies to pass this terrible project
 
 Inception is a project that requires you to use docker-compose to setup three
 Docker containers, running self-built images with nginx, wordpress and mariadb,
