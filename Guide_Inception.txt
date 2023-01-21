@@ -121,13 +121,6 @@ folder and the volume shows up, but they're not connected to anything. I wrote
 the volume path for mariadb as /var/db/mysql/ whereas it should be /var/lib/mysql/.
 I did this wrong on purpose so they're not connected. There is no persistence upon reboot.
 
-I tried to connect them, but it crashes the wordpress container. I don't know why, and 
-neither did anyone I asked. Luckily, without persistence, you can still get 
-90% on your evaluation at the time of writing, which allows you to pass the project. 
-Sorry. If you want to get 100% on your evaluation you're reading the wrong guide.
-Go read the documentation instead.
-
-But do let me know what I did wrong if you find out, though.
 
 Part 2) Creating your Docker images
 
